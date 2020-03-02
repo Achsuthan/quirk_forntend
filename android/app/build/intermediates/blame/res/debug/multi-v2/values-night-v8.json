@@ -1,0 +1,37 @@
+{
+    "logs": [
+        {
+            "outputFile": "D:\\Pikanite Out Source\\Dough\\Project\\Mobile\\quirk_forntend\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-night-v8\\values-night-v8.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\ASUS\\.gradle\\caches\\transforms-2\\files-2.1\\48a709b2412de6c1f12faa1281b6e075\\res\\values-night-v8\\values-night-v8.xml",
+                    "from": {
+                        "startLines": "2,14,20,23,26",
+                        "startColumns": "4,4,4,4,4",
+                        "startOffsets": "100,926,1236,1399,1465",
+                        "endLines": "13,19,22,25,59",
+                        "endColumns": "10,10,10,10,10",
+                        "endOffsets": "921,1231,1394,1460,3573"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\ASUS\\.gradle\\caches\\transforms-2\\files-2.1\\1b1ee9bb8a285696319a4badc88dc45f\\res\\values-night-v8\\values-night-v8.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,125,209,293,389,491,593,687",
+                        "endColumns": "69,83,83,95,101,101,93,88",
+                        "endOffsets": "120,204,288,384,486,588,682,771"
+                    },
+                    "to": {
+                        "startLines": "60,61,62,63,64,65,66,67",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "3578,3648,3732,3816,3912,4014,4116,4210",
+                        "endColumns": "69,83,83,95,101,101,93,88",
+                        "endOffsets": "3643,3727,3811,3907,4009,4111,4205,4294"
+                    }
+                }
+            ]
+        }
+    ]
+}
