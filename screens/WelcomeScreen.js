@@ -28,7 +28,7 @@ const Welcome = ({navigation}) => {
       <View style={container}>
         <Text style={welcomeText}>Welcome to Quirk!</Text>
         <View style={btnContainer}>
-          <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
+          <TouchableOpacity onPress={() => navigation.navigate('BankAccount')}>
             <Text style={btn}>Get Started!</Text>
           </TouchableOpacity>
         </View>

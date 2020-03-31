@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\Pikanite Out Source\\Dough\\Project\\Mobile\\quirk_forntend\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-ur\\values-ur.xml",
+            "outputFile": "D:\\Pikanite Out Source\\Quirk\\Project\\Mobile\\quirk_forntend\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-ur\\values-ur.xml",
             "map": [
                 {
                     "source": "C:\\Users\\ASUS\\.gradle\\caches\\transforms-2\\files-2.1\\1b1ee9bb8a285696319a4badc88dc45f\\res\\values-ur\\values-ur.xml",

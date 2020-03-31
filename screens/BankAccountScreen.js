@@ -43,7 +43,7 @@ const Welcome = ({navigation}) => {
         <View style={btnContainer}>
         
         {/* Plaid SDK integration */}
-        {/* <PlaidLink
+        <PlaidLink
         // Replace any of the following <#VARIABLE#>s according to your setup,
         // for details see https://plaid.com/docs/quickstart/#client-side-link-configuration
     
@@ -69,12 +69,12 @@ const Welcome = ({navigation}) => {
           // webhook='<# Webhook URL #>'
         >
         <Text style={btn}>Link your bank account</Text>
-      </PlaidLink> */}
+      </PlaidLink>
 
         {/* plaid WebView integration */}
-        <TouchableOpacity onPress={() => navigation.navigate('PlaidAuthenticator')}>
+        {/* <TouchableOpacity onPress={() => navigation.navigate('PlaidAuthenticator')}>
           <Text style={btn}>Link your bank account</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         </View>
       </View>
     </>
