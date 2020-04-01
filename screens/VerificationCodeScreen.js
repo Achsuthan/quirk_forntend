@@ -56,7 +56,7 @@ const ResetCode = ({navigation}) => {
       };
       axios({
         method: 'post',
-        url: 'http://34.66.22.221:8082/forgot/verify',
+        url: 'https://quiz.quirk.money:8082/forgot/verify',
         data: payload,
       })
         .then(response => {

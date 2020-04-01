@@ -55,7 +55,7 @@ const ResetCode = ({navigation}) => {
       };
       axios({
         method: 'put',
-        url: 'http://34.66.22.221:8082/forgot/update',
+        url: 'https://quiz.quirk.money:8082/forgot/update',
         data: payload,
       })
         .then(response => {

@@ -33,7 +33,7 @@ const SignUp = ({navigation}) => {
       };
       const response = await axios({
         method: 'post',
-        url: 'http://34.66.22.221:8082/user',
+        url: 'https://quiz.quirk.money:8082/user',
         data: payload,
       })
         .then(response => {

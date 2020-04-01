@@ -44,7 +44,7 @@ const SignIn = ({navigation}) => {
       };
       axios({
         method: 'post',
-        url: 'http://34.66.22.221:8082/user/login',
+        url: 'https://quiz.quirk.money:8082/user/login',
         data: payload,
       })
         .then(response => {

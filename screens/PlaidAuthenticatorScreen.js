@@ -30,6 +30,7 @@ const PlaidAuthenticatorScreen = ({
     let tmpData = {
       ...data
     };
+    console.log('success: ', tmpData)
     if (tmpData.action === 'plaid_link-undefined::event' && tmpData.eventName === "SUBMIT_CREDENTIALS") {
       setTimeout(() => {
         // AsyncStorage.clear();

@@ -77,7 +77,7 @@ const AboutYou = ({navigation}) => {
       console.log(payload);
       axios({
         method: 'post',
-        url: 'http://34.66.22.221:8082/userDetails',
+        url: 'https://quiz.quirk.money:8082/userDetails',
         data: payload,
       })
         .then(response => {

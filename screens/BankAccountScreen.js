@@ -25,7 +25,8 @@ const Welcome = ({navigation}) => {
   const getBankData = (data) => {
       console.log(data.link_connection_metadata.raw_data.accounts);
 
-      navigation.navigate('PlaidAuthenticator')
+      // navigation.navigate('PlaidAuthenticator')
+      navigation.navigate('Dashboard')
       notifyMessage("Your account sccessfully connected with Quirk.")
   }
 
@@ -51,9 +52,10 @@ const Welcome = ({navigation}) => {
           clientName= {'UserDetails.firstName'}
           env='sandbox'  // 'sandbox' or 'development' or 'production'
           product={['auth','transactions']}
-          countryCodes={['GB']}
+          // countryCodes={['GB']}
           onSuccess={data => 
             getBankData(data)
+
           }
           onExit={data => 
             console.log('exit: ', data)
