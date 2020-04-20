@@ -41,7 +41,7 @@ const Forgot = ({navigation}) => {
       
       axios({
         method: 'post',
-        url: 'https://quiz.quirk.money:8082/forgot',
+        url: 'https://quiz.quirk.money:8083/api/forgot',
         data: payload,
       })
         .then(response => {
@@ -115,7 +115,7 @@ const Forgot = ({navigation}) => {
             </Text>
             <Reinput
               placeholderVisibility={false}
-              placeholder="User ID"
+              placeholder="Email"
               fontSize={16}
               fontFamily={'openSans-bold'}
               padding={10}

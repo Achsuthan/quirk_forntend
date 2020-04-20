@@ -55,7 +55,7 @@ const ResetCode = ({navigation}) => {
       };
       axios({
         method: 'put',
-        url: 'https://quiz.quirk.money:8082/forgot/update',
+        url: 'https://quiz.quirk.money:8083/api/forgot/update',
         data: payload,
       })
         .then(response => {

@@ -33,7 +33,7 @@ const SignUp = ({navigation}) => {
       };
       const response = await axios({
         method: 'post',
-        url: 'https://quiz.quirk.money:8082/user',
+        url: 'https://quiz.quirk.money:8083/api/user',
         data: payload,
       })
         .then(response => {
@@ -105,7 +105,7 @@ const SignUp = ({navigation}) => {
             <Reinput
               placeholderVisibility={false}
               // label=""
-              placeholder="User ID"
+              placeholder="Email"
               // height={100}
               fontSize={16}
               // fontWeight={"bold"}

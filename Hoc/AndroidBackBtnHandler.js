@@ -17,7 +17,7 @@ class AndroidBackBtnHandler extends Component {
   //   return <>{this.props.children}</>;
   // }
 
-  state = {
+state = {
     backClickCount: 0
 };
 
@@ -25,7 +25,6 @@ constructor(props) {
     super(props);
 
     this.springValue = new Animated.Value(100) ;
-
 }
 
 componentWillMount() {
@@ -81,14 +80,6 @@ render() {
 
             <Animated.View style={[styles.animatedView, {transform: [{translateY: this.springValue}]}]}>
                 <Text style={styles.exitTitleText}>Press back again to exit the app.</Text>
-
-                {/* <TouchableOpacity
-                    activeOpacity={0.9}
-                    onPress={() => BackHandler.exitApp()}
-                >
-                    <Text style={styles.exitText}>Exit</Text>
-                </TouchableOpacity> */}
-
             </Animated.View>
         </View>
     );

@@ -44,7 +44,7 @@ const SignIn = ({navigation}) => {
       };
       axios({
         method: 'post',
-        url: 'https://quiz.quirk.money:8082/user/login',
+        url: 'https://quiz.quirk.money:8083/api/user/login',
         data: payload,
       })
         .then(response => {
@@ -109,7 +109,7 @@ const SignIn = ({navigation}) => {
             </Text>
             <Reinput
               placeholderVisibility={false}
-              placeholder="User ID"
+              placeholder="Email"
               fontSize={16}
               fontFamily={'openSans-bold'}
               padding={10}
