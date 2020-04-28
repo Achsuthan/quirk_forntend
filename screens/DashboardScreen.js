@@ -15,29 +15,33 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import { NavigationActions } from 'react-navigation';
+import PlaidLink from 'react-native-plaid-link-sdk';
+
 
 const Dashboard = ({navigation, onBackPress}) => {
   const [userDetails, setUserDetails] = useState('');
   const [transactionData, setTransaction] = useState('');
   const [public_token, setPublicToken] = useState('');
   const [callCount, setCallCount] = useState(0);
+  const [bankCount, setBankCount] = useState(1);
 
   const [isInvalid, setIsInvalid] = useState(false);
   const [isStrech, setStrech] = useState(true);
+  const [isBank, setBank] = useState(false);
 
   const DATA = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      title: 'Quirk Bank 1',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      title: 'Quirk Bank 2',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      title: 'Quirk Bank 3',
-    },
+    // {
+    //   id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+    //   title: 'Quirk Bank 1',
+    // },
+    // {
+    //   id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+    //   title: 'Quirk Bank 2',
+    // },
+    // {
+    //   id: '58694a0f-3da1-471f-bd96-145571e29d72',
+    //   title: 'Quirk Bank 3',
+    // },
   ];
 
   var transList = [];
@@ -54,10 +58,15 @@ const Dashboard = ({navigation, onBackPress}) => {
       setUserDetails(JSON.parse(value));
   
       const token = await AsyncStorage.getItem('@publicToken');
-      setPublicToken(token)
+      setPublicToken(token);
+
+      const bank = await AsyncStorage.getItem('@bankCount');
+      setBankCount(bank);
   
       console.log('user_id : ' + userDetails.userId);
-      console.log('user_access : ' + JSON.stringify(userDetails.access_token));
+      console.log('user_access : ' + JSON.stringify(userDetails.access_token));  
+      console.log('bank_count_0 : '+ bankCount);
+          
 
       // await apiCall();
       // setCallCount(callCount+1)
@@ -65,10 +74,27 @@ const Dashboard = ({navigation, onBackPress}) => {
     }
     console.log('user_id 2: ' + userDetails.userId);
     console.log('call count: ' + callCount);
+    console.log('bank_count_1 : '+ bankCount);
+    if(bankCount == undefined || bankCount == null){
+      setBankCount(1);
+    }
+    storeData(bankCount);
+
     if(callCount < 2){
       apiCall();
     }
-   
+
+    console.log('bank_count_2 : '+ bankCount);
+    if(bankCount > 0){
+      for(let i = 1; i < bankCount + 1; i++){
+        var bankObj = {};
+        bankObj.id = '58694a0f-3da1-471f-bd96-145571e29d72'+i;
+        bankObj.title = 'Quirk Bank '+ i;
+        DATA.push(bankObj);
+        console.log('bank_ubj : '+ JSON.stringify(bankObj));
+      }
+    }
+
 
     async function apiCall(){
       if(userDetails.access_token != undefined && userDetails.access_token != null && userDetails.access_token != 'nan'){
@@ -126,9 +152,11 @@ const Dashboard = ({navigation, onBackPress}) => {
     if(isInvalid == false){
       setIsInvalid(true)
       setStrech(false)
+      // setBank(true);
     }else{
       setIsInvalid(false)
       setStrech(true)
+      // setBank(true);
     }
 
     console.log('strech '+isStrech);
@@ -188,7 +216,7 @@ const Dashboard = ({navigation, onBackPress}) => {
           console.log(response.data);
           if (response.data.error_code == undefined) {
             //Success
-              console.log('transaction : '+ JSON.stringify(response.data.accounts));
+              // console.log('transaction : '+ JSON.stringify(response.data.accounts));
               setTransaction(response.data.accounts);
 
           } else {
@@ -217,11 +245,11 @@ const Dashboard = ({navigation, onBackPress}) => {
   }
 
     if(transactionData != undefined && transactionData != null && transactionData != ''){
-      console.log('trans : '+ JSON.stringify(transactionData));
+      // console.log('trans : '+ JSON.stringify(transactionData));
     
       transactionData.map((x) => {
         var transObj = {};
-        console.log('acc_obj : ', x);
+        // console.log('acc_obj : ', x);
         
     
         var balance = x.balances;
@@ -249,7 +277,7 @@ const Dashboard = ({navigation, onBackPress}) => {
         transObj.number = number;
         
         transList.push(transObj); 
-        console.log('trans_obj' +  JSON.stringify(transObj));
+        // console.log('trans_obj' +  JSON.stringify(transObj));
         
     
         // Calculate totalBalance
@@ -284,79 +312,156 @@ const Dashboard = ({navigation, onBackPress}) => {
         NavigationActions.navigate({ routeName: screen })
       ]
     });
-    this.props.navigation.dispatch(resetAction);
+    navigation.dispatch(resetAction);
+  }
+
+  async function storeData (value) {
+    try {
+      console.log('bank_value : '+ value);
+      
+      await AsyncStorage.setItem('@bankCount', value)
+    } catch (e) {
+      // saving error
+    }
+  }
+
+   //Plaid connection success
+   const getBankData = (data) => {
+    console.log('full respond : ' + JSON.stringify(data));  
+    console.log('account respond : ' + data.link_connection_metadata.raw_data.accounts);
+
+    AsyncStorage.setItem('@publicToken', data.public_token);
+    console.log('public_token_4', data.public_token);    
+    setPublicToken(data.public_token);
+    setBank(false);
+    if(bankCount == undefined || bankCount == null){
+      setBankCount(1);
+    }else{
+      setBankCount(bankCount + 1);
+    }
+
+    storeData(bankCount);
+    notifyMessage("Your account sccessfully connected with Quirk.");
+    getAccessToken(public_token , userDetails.userId);
+
+    // AsyncStorage.setItem('@bankCount', bankCount);
+    console.log('bank_count_3', bankCount);
+
+
   }
 
   const {headingSty, logoutSty, currencySty, container, container1, appBar, appBarContent, appBarIcon, appBarAccount, accountStyle, userStyle, userIcon} = styles;
   return (
     <AndroidBackBtnHandler>
-      <View style={appBar}>
-        <Text style={appBarContent}>Hello {userDetails.firstName}!</Text>
-        <TouchableOpacity
-          onPress={ () => 
-            ShowHideTextComponentView()
-          }>
-        <Image source={require('../assets/images/round_account_circle_black.png')} style={appBarIcon} />
-        </TouchableOpacity>
-      </View>
-
-      <View style={isStrech ? container : container1}>
       {
-        isInvalid ? 
-        <View style= {styles.appBarAccount}> 
-            <FlatList
-              data={DATA}
-              renderItem={({ item }) => <Item title={item.title} id = {item.id} />}
-              keyExtractor={item => item.id}
-            />
+        !isBank ? 
+        <View style = {styles.appLayout}>
+          <View style={appBar}>
+            <Text style={appBarContent}>Hello {userDetails.firstName}!</Text>
             <TouchableOpacity
-              onPress={ () => [
-                // console.log('log_press')    
-                // this.navigateAfterFinish('BankAccount')
-                navigation.navigate('BankAccount', { isFromAccount: true }),
-                setIsInvalid(false),
-                setStrech(true),
-              ]}>
-              <View style = {accountStyle}>
-                <Image source={require('../assets/images/round_person_add_black.png')} style = {{width: 35, height: 35}}/>
-                <Text style={userStyle}>Add another bank account</Text>
-              </View>
-
+              onPress={ () => 
+                ShowHideTextComponentView()
+              }>
+            <Image source={require('../assets/images/round_account_circle_black.png')} style={appBarIcon} />
             </TouchableOpacity>
-        </View>
-      : 
-      <View>
-        <View style={styles.dashboardStyle}>
-          
-          <Text style={styles.transHeading}>Account balances returned</Text>
-          <FlatList style = {styles.listStyle}
-            data={transList}
-            renderItem={({ item }) => <TransactionItem name = {item.name} number = {item.number} currency = {item.currency} value = {item.value} type = {item.type} />}
-            keyExtractor={item => item.id}
-          />
-          
-          <Text style={{color: '#7f7f7f', fontSize: 10, fontFamily: 'OpenSans-SemiBold', marginTop: 5}}>Total Balance</Text>
-            <Text style={currencySty}>{totalBalance}</Text>
+          </View>
 
+          <View style={isStrech ? container : container1}>
+          {
+            isInvalid ? 
+            <View style= {styles.appBarAccount}> 
+                <FlatList
+                  data={DATA}
+                  renderItem={({ item }) => <Item title={item.title} id = {item.id} />}
+                  keyExtractor={item => item.id}
+                />
+                <TouchableOpacity
+                  onPress={ () => [
+                    // console.log('log_press')    
+                    // navigateAfterFinish('BankAccount'),
+                    // navigation.navigate('BankAccount', { isFromAccount: true }),
+
+                    setIsInvalid(false),
+                    setStrech(true),
+                    setBank(true)
+                  ]}>
+                  <View style = {accountStyle}>
+                    <Image source={require('../assets/images/round_person_add_black.png')} style = {{width: 35, height: 35}}/>
+                    <Text style={userStyle}>Add another bank account</Text>
+                  </View>
+
+                </TouchableOpacity>
+            </View>
+          : 
+          <View>
+            <View style={styles.dashboardStyle}>
+              
+              <Text style={styles.transHeading}>Account balances returned</Text>
+              <FlatList style = {styles.listStyle}
+                data={transList}
+                renderItem={({ item }) => <TransactionItem name = {item.name} number = {item.number} currency = {item.currency} value = {item.value} type = {item.type} />}
+                keyExtractor={item => item.id}
+              />
+              
+              <Text style={{color: '#7f7f7f', fontSize: 10, fontFamily: 'OpenSans-SemiBold', marginTop: 5}}>Total Balance</Text>
+                <Text style={currencySty}>{totalBalance}</Text>
+
+            </View>
+            <View
+              style={{
+                flex: 0.5,
+                justifyContent: 'flex-end',
+                alignItems: 'center',
+                paddingBottom: 10,
+              }}>
+              <TouchableOpacity
+                onPress={() => [
+                  AsyncStorage.clear(),
+                  navigation.navigate('Welcome'),
+                ]}>
+                <Text style={logoutSty}>Log out</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          }
+          </View>
+      </View>
+      : 
+      <View style = {styles.bankContainer}>
+        <View style = {styles.bankBack}>
+              <TouchableOpacity
+                onPress={ () => 
+                  setBank(false)
+                }>
+                <Image source={require('../assets/images/round_arrow_left.png')} style={styles.appBarIcon} />
+              </TouchableOpacity>
         </View>
-        <View
-          style={{
-            flex: 0.5,
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-            paddingBottom: 10,
-          }}>
-          <TouchableOpacity
-            onPress={() => [
-              AsyncStorage.clear(),
-              navigation.navigate('Welcome'),
-            ]}>
-            <Text style={logoutSty}>Log out</Text>
-          </TouchableOpacity>
-        </View>
+        <View style = {styles.bankStyle}>
+          <PlaidLink
+          // Replace any of the following <#VARIABLE#>s according to your setup,
+          // for details see https://plaid.com/docs/quickstart/#client-side-link-configuration
+      
+            publicKey='70d336b30cdb7031f9bdf0de4e2ada'
+            clientName= {userDetails.firstName}
+            env='sandbox'  // 'sandbox' or 'development' or 'production'
+            product={['auth','transactions']}
+            // countryCodes={['GB']}
+            onSuccess={data => 
+              getBankData(data)
+            }
+            onExit={data => 
+              console.log('exit: ', data)
+            }
+            onCancelled = {
+              (result) => {console.log('Cancelled: ', result)}
+            }
+            >
+            <Text style={styles.btn}>Link your bank account</Text>
+        </PlaidLink>
+       </View>
       </View>
       }
-      </View>
+      
     </AndroidBackBtnHandler>
   );
 };
@@ -397,6 +502,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     padding: 5,
     fontFamily: 'OpenSans-Bold',
+  },
+  appLayout: {
+    backgroundColor: 'white',
+    borderColor: 'black',
+    borderWidth: 1,
+    borderRadius: 5,
+    alignItems: 'flex-start',
+    // justifyContent: 'center',
+    flexDirection: 'column',
+    alignSelf: "stretch",
+    flex: 1
   },
   appBar: {
     backgroundColor: 'white',
@@ -507,7 +623,43 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width, 
     paddingLeft: 5, 
     paddingRight: 5
-  }
+  },
+  btn: {
+    backgroundColor: 'black',
+    borderColor: 'white',
+    borderWidth: 1,
+    borderRadius: 10,
+    color: 'white',
+    fontSize: 24,
+    fontWeight: '900',
+    overflow: 'hidden',
+    padding: 12,
+    paddingHorizontal: 30,
+    textAlign: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+  },
+  bankStyle: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center'
+  },
+  bankContainer: {
+    flex: 1,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 10,
+
+  },
+  bankBack: {
+    paddingTop: 12,
+    paddingBottom: 12,
+    height: 60,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    flexDirection: 'row',
+    alignSelf: "stretch"
+  },
 });
 
 export default Dashboard;

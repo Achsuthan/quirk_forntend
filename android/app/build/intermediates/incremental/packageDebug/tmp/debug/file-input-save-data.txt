@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Mon Apr 20 17:00:36 IST 2020
+#Tue Apr 28 16:27:50 IST 2020
 70.path=lib/x86/libfolly_futures.so
 64.base=D\:\\Pikanite Out Source\\Quirk\\Project\\Mobile\\quirk_forntend\\android\\app\\build\\intermediates\\transforms\\mergeJniLibs\\debug\\0
 47.base=D\:\\Pikanite Out Source\\Quirk\\Project\\Mobile\\quirk_forntend\\android\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\1

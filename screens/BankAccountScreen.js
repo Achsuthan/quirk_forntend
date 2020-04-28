@@ -29,24 +29,38 @@ const Welcome = (props) => {
   const {container, welcomeText, btn, btnContainer} = styles;
 
   const [UserDetails, setUserDetails] = useState('');
+  const [bankCount, setBankCount] = useState(0);
+
   useEffect(() => {
     getData();
   }, []);
   async function getData() {
     const value = await AsyncStorage.getItem('@userDetails');
     setUserDetails(JSON.parse(value));
+    const bank = await AsyncStorage.getItem('@bankCount');
+    setBankCount(bank);
+    console.log('bank_count_1', bankCount);
+  
+    console.log('bank_count_2', bankCount);
+  if(bankCount == undefined || bankCount == null){
+    setBankCount(1);
+  }else{
+    setBankCount(bankCount + 1);
   }
-
+  console.log('bank_count_3', bankCount);
+  }
+  
 
   //Plaid connection success
   const getBankData = (data) => {
-    console.log('full respond : ' + data);  
+    console.log('full respond : ' + JSON.stringify(data));  
     // console.log('conncetion respond : ' + data.link_connection_metadata);
     console.log('account respond : ' + data.link_connection_metadata.raw_data.accounts);
-    console.log('public_token', data.public_token);
-    
+
 
     // navigation.navigate('PlaidAuthenticator')
+    AsyncStorage.setItem('@bankCount', bankCount);
+    console.log('public_token_1', data.public_token);
     AsyncStorage.setItem(
       '@publicToken',data.public_token,
       () => {
@@ -54,7 +68,7 @@ const Welcome = (props) => {
         notifyMessage("Your account sccessfully connected with Quirk.")
       },
     );
-    
+    console.log('public_token_2', data.public_token);
     
   }
 
@@ -125,8 +139,6 @@ const Welcome = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
     paddingLeft: 20,
     paddingRight: 20,
     paddingTop: 10,
@@ -150,18 +162,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   appBar: {
-    // backgroundColor: 'white',
-    // borderColor: 'black',
-    // borderWidth: 1,
-    // borderRadius: 5,
-    // color: 'white',
-    // fontSize: 16,
     paddingTop: 12,
     paddingBottom: 12,
-    // paddingHorizontal: 15,
-    // textAlign: 'center',
     height: 60,
-    // marginTop: 5,
     alignItems: 'center',
     justifyContent: 'flex-start',
     flexDirection: 'row',

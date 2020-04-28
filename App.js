@@ -33,6 +33,7 @@ const AuthenticationNavigator = createStackNavigator(
     ResetPassword: ResetPasswordScreen,
   },
   {
+    // unmountInactiveRoutes: true,
     initialRouteName: 'Welcome',
     defaultNavigationOptions: {
       header: null,
